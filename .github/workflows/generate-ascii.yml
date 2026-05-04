@@ -1,0 +1,28 @@
+name: My First Workflow
+
+on: [push, fork]
+
+jobs:
+  first_job: 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v6
+
+      - name: Install cowsay
+        run: sudo apt-get install cowsay -y
+
+      - name: Generate ASCII Artwork
+        run: cowsay -f dragon "Run for cover, I am a DRAGON....RAWR" >> dragon.txt
+      
+      - name: Test File Exists
+        run: grep -i "dragon" dragon.txt
+
+      - name: Read File
+        run: cat dragon.txt
+      
+      - name: List Repo files
+        run: ls -ltra
+      
+# The third-party library 'cowsay' is not present by default on the vm that runs the workflow.
+# It needs to be installed first. Once installed in a step, it will be available in other steps of the same job.
