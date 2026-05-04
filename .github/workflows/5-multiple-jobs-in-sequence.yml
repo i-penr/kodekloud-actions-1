@@ -1,0 +1,39 @@
+name: Multiple Jobs
+
+on: [push, fork]
+
+jobs:
+  build_job_1: 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install cowsay
+        run: sudo apt-get install cowsay -y
+
+      - name: Generate ASCII Artwork
+        run: cowsay -f dragon "Run for cover, I am a DRAGON....RAWR" >> dragon.txt
+      
+      - name: Sleep for 30 seconds
+        run: sleep 30
+
+  test_job_2:
+    needs: build_job_1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sleep for 10 seconds
+        run: sleep 10
+      
+      - name: Test file Exists
+        run: grep -ri "dragon" dragon.txt
+  
+  deploy_job_3:
+    needs: [test_job_1]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read File
+        run: cat dragon.txt
+
+      - name: Deploy
+        run: echo "Deploying..."
+
+# Comparing to workflow 4, each job now executes in a sequence, thanks to the needs field. But it still fails.
+# Each job runs on a different vm. That's why, in test_job_2 and deploy_job_3, there is no access to dragon.txt and it still fails
