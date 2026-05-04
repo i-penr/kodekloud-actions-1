@@ -6,9 +6,17 @@ jobs:
   first_job: 
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v6
+
       - name: Welcome message
         run: echo "My first GitHub Actions Job"
+
       - name: List files
         run: ls
+
       - name: Read file
         run: cat README.md
+
+# By default, jobs don't have access to the repository. A "Checkout" step is needed as an Action in order to access them,
+# or else the workflow will fail.
