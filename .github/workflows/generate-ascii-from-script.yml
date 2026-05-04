@@ -1,0 +1,16 @@
+name: Generate ASCII Workflow from Shell Script
+
+on: [push, fork]
+
+jobs:
+  generate_ascii: 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v6
+
+      - name: List Repo files
+        run: ls -ltra
+
+      - name: Executing Shell Script
+        run: ./ascii-script.sh
