@@ -3,7 +3,7 @@ name: My First Workflow
 on: [push, fork]
 
 jobs:
-  first_job: 
+  generate_ascii: 
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
