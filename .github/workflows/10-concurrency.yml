@@ -1,4 +1,4 @@
-name: Manual Trigger
+name: Concurrency
 
 on:
   workflow_dispatch:
