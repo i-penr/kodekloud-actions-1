@@ -1,0 +1,38 @@
+name: Manual Trigger
+
+on:
+  workflow_dispatch:
+    
+# We can add concurrency at the workflow level
+#concurrency:
+
+env:
+  CONTAINER_REGISTRY: docker.io
+  IMAGE_NAME: github-actions-nginx
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Docker Build
+        run: echo docker build -t ${{ env.CONTAINER_REGISTRY }}/${{ vars.DOCKER_USERNAME }}/$IMAGE_NAME:latest
+    
+      - name: Docker Login
+          # Sensitive information like passwords can be stored inside github's secrets Settings > Variables and Secrets > Actions
+        run: echo docker login --username ${{ vars.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
+    
+  deploy:
+    needs: docker
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deployment
+      cancel-in-progress: true
+    steps:
+      - name: Docker run
+        run: |
+          echo docker run -d -p 8080:80 $CONTAINER_REGISTRY/${{ vars.DOCKER_USERNAME }}/$IMAGE_NAME:latest
+          sleep 300
+
+# What happens if a job takes too long to execute and another push triggers a new workflow?
+# By default, the second job waits for the first one to finish, but you can automatically cancel the first one
+# with the concurrency field. Add the job to a group and set the boolean cancel-in-progress to allow this feature
