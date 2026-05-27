@@ -1,0 +1,15 @@
+name: If conditional example
+
+on:
+  workflow_dispatch:
+    
+jobs:
+  deploy:
+    # Only execute this job if the branch is main
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        run: echo deploy
+
+# It's just an if. You know how it works
