@@ -1,9 +1,28 @@
 name: Manual Trigger
 
 on:
-# You can add multiple options to set values when the workflow runs.
+# You can add multiple options to set values when the workflow runs. These will shop up in the UI
   workflow_dispatch:
-    
+    inputs:
+      run-tests:
+        description: "Run tests?"
+        type: boolean
+        required: true
+      test-type:
+        description: "Type of test to run"
+        type: choice
+        options:
+          - unit
+          - integration
+          - all
+      environment:
+        description: "Choose an environment"
+        required: true
+        type: environment
+      build-number:
+        type: number
+      message:
+        type: string
 
 env:
   CONTAINER_REGISTRY: docker.io
