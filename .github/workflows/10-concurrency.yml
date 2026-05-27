@@ -24,11 +24,13 @@ jobs:
   deploy:
     needs: docker
     runs-on: ubuntu-latest
+    timeout-minutes: 600
     concurrency:
       group: deployment
       cancel-in-progress: true
     steps:
       - name: Docker run
+        timeout-minutes: 600
         run: |
           echo docker run -d -p 8080:80 $CONTAINER_REGISTRY/${{ vars.DOCKER_USERNAME }}/$IMAGE_NAME:latest
           sleep 300
@@ -36,3 +38,5 @@ jobs:
 # What happens if a job takes too long to execute and another push triggers a new workflow?
 # By default, the second job waits for the first one to finish, but you can automatically cancel the first one
 # with the concurrency field. Add the job to a group and set the boolean cancel-in-progress to allow this feature
+
+# You can also add a timeout, at the step level or job level witht the timeout-minutes field
