@@ -32,6 +32,14 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
+      - name: Print workflow inputs
+        run: |
+          echo ${{ inputs.run-tests }}
+          echo ${{ inputs.test-type }}
+          echo ${{ inputs.environment }}
+          echo ${{ inputs.build-number }}
+          echo ${{ inputs.message }}
+          
       - name: Docker Build
         run: echo docker build -t ${{ env.CONTAINER_REGISTRY }}/${{ vars.DOCKER_USERNAME }}/$IMAGE_NAME:latest
     
