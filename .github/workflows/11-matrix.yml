@@ -6,9 +6,21 @@ on:
 jobs:
   build:
     strategy:
+      # Default: true. When enabled, it skips remaining jobs when a job fails
+      fail-fast: false
+      # Number of jobs that run in pararllel
+      max-parallel: 2
       matrix:
         os: ["ubuntu-latest", "windows-latest"]
         images: ["hello-world", "alpine"]
+        # To skip this combination
+        exclude:
+          - images: alpine
+            os: windows-latest
+        # And include a specific combinatino
+        include:
+          - images: amd64/alpine
+            os: ubuntu-latest
     runs-on: ${{ matrix.os }}
     steps:
       - name: Run echo
