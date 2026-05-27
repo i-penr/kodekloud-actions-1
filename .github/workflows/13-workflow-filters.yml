@@ -1,0 +1,26 @@
+name: Workflow Filters
+
+on:
+  workflow_dispatch:
+  push:
+#    branches-ignore:
+#      - feature/* # feature/example, feature/test...
+#      - test/** # test/example, test/example/test...
+    branches:
+      - main
+      - '!feature/*' # ! to ignore
+  # Trigger when PRs are opened or closed for the branch main, ignore if it only makes changes to README.md
+  pull_request:
+    types: 
+      - opened
+      - closed
+    paths-ignore:
+      - README.md
+    branches:
+      - main
+    
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "This step is executed for the event ${{ github.event_name }}"
